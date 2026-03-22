@@ -1,11 +1,987 @@
-{
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
-        { "key": "Access-Control-Allow-Origin", "value": "*" }
-      ]
-    }
-  ]
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRAINROT WORLD — Game Design Document</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Russo+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --neon: #00ffcc;
+    --hot: #ff2d55;
+    --gold: #ffd700;
+    --purple: #9b30ff;
+    --bg: #060610;
+    --card: #0d0d22;
+    --text: #e8e8ff;
+    --dim: #6666aa;
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+background: var(–bg);
+color: var(–text);
+font-family: ‘Space Mono’, monospace;
+overflow-x: hidden;
 }
+
+/* animated grid bg */
+body::before {
+content: ‘’;
+position: fixed; inset: 0;
+background-image:
+linear-gradient(rgba(0,255,204,0.04) 1px, transparent 1px),
+linear-gradient(90deg, rgba(0,255,204,0.04) 1px, transparent 1px);
+background-size: 40px 40px;
+z-index: 0;
+animation: gridMove 20s linear infinite;
+}
+@keyframes gridMove {
+0% { background-position: 0 0; }
+100% { background-position: 40px 40px; }
+}
+
+.container { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 20px; }
+
+/* HERO */
+.hero {
+text-align: center;
+padding: 60px 20px 40px;
+position: relative;
+}
+.hero-eyebrow {
+font-family: ‘Space Mono’, monospace;
+font-size: 11px;
+letter-spacing: 6px;
+color: var(–neon);
+text-transform: uppercase;
+margin-bottom: 16px;
+opacity: 0;
+animation: fadeUp 0.6s ease forwards 0.2s;
+}
+.hero-title {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: clamp(64px, 14vw, 140px);
+line-height: 0.9;
+letter-spacing: 4px;
+background: linear-gradient(135deg, #fff 30%, var(–neon) 60%, var(–hot) 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+opacity: 0;
+animation: fadeUp 0.7s ease forwards 0.4s;
+}
+.hero-sub {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: clamp(24px, 5vw, 48px);
+color: var(–gold);
+letter-spacing: 8px;
+margin-top: 8px;
+opacity: 0;
+animation: fadeUp 0.7s ease forwards 0.6s;
+}
+.hero-desc {
+margin-top: 24px;
+font-size: 13px;
+color: var(–dim);
+max-width: 500px;
+margin-left: auto; margin-right: auto;
+line-height: 1.8;
+opacity: 0;
+animation: fadeUp 0.7s ease forwards 0.8s;
+}
+.badge-row {
+display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+margin-top: 24px;
+opacity: 0;
+animation: fadeUp 0.7s ease forwards 1s;
+}
+.badge {
+background: rgba(0,255,204,0.08);
+border: 1px solid rgba(0,255,204,0.3);
+border-radius: 20px;
+padding: 6px 16px;
+font-size: 11px;
+color: var(–neon);
+letter-spacing: 2px;
+}
+
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(20px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+/* SECTIONS */
+.section {
+margin: 48px 0;
+opacity: 0;
+transform: translateY(30px);
+transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.section.visible { opacity: 1; transform: translateY(0); }
+
+.section-header {
+display: flex; align-items: center; gap: 16px;
+margin-bottom: 24px;
+}
+.section-num {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 48px;
+color: rgba(0,255,204,0.15);
+line-height: 1;
+min-width: 50px;
+}
+.section-title {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 32px;
+letter-spacing: 3px;
+color: #fff;
+}
+.section-line {
+flex: 1;
+height: 1px;
+background: linear-gradient(90deg, rgba(0,255,204,0.4), transparent);
+}
+
+/* CARDS */
+.card-grid { display: grid; gap: 16px; }
+.card-grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.card-grid.cols-3 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+.card {
+background: var(–card);
+border: 1px solid rgba(255,255,255,0.06);
+border-radius: 16px;
+padding: 24px;
+position: relative;
+overflow: hidden;
+transition: transform 0.2s, border-color 0.2s;
+cursor: default;
+}
+.card:hover {
+transform: translateY(-4px);
+border-color: rgba(0,255,204,0.3);
+}
+.card::before {
+content: ‘’;
+position: absolute; top: 0; left: 0; right: 0; height: 2px;
+background: var(–card-accent, var(–neon));
+opacity: 0.6;
+}
+.card-icon { font-size: 36px; margin-bottom: 12px; }
+.card-title {
+font-family: ‘Russo One’, sans-serif;
+font-size: 15px;
+color: #fff;
+margin-bottom: 8px;
+letter-spacing: 1px;
+}
+.card-text {
+font-size: 12px;
+color: var(–dim);
+line-height: 1.8;
+}
+.card-tag {
+display: inline-block;
+margin-top: 12px;
+background: rgba(0,255,204,0.1);
+color: var(–neon);
+border-radius: 4px;
+padding: 3px 10px;
+font-size: 10px;
+letter-spacing: 2px;
+}
+
+/* LOOP DIAGRAM */
+.loop {
+background: var(–card);
+border-radius: 20px;
+padding: 32px;
+border: 1px solid rgba(255,255,255,0.06);
+}
+.loop-steps {
+display: flex; align-items: center; gap: 0;
+flex-wrap: wrap; justify-content: center;
+}
+.loop-step {
+display: flex; flex-direction: column; align-items: center;
+gap: 8px; text-align: center;
+padding: 16px;
+min-width: 120px;
+}
+.loop-icon {
+width: 56px; height: 56px;
+border-radius: 50%;
+display: flex; align-items: center; justify-content: center;
+font-size: 24px;
+background: rgba(0,255,204,0.08);
+border: 2px solid rgba(0,255,204,0.2);
+transition: all 0.3s;
+}
+.loop-step:hover .loop-icon {
+background: rgba(0,255,204,0.2);
+border-color: var(–neon);
+transform: scale(1.1);
+}
+.loop-label { font-size: 11px; color: var(–dim); letter-spacing: 1px; max-width: 90px; line-height: 1.5; }
+.loop-arrow { font-size: 20px; color: rgba(0,255,204,0.3); padding: 0 4px; }
+
+/* MONSTERS */
+.monster-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
+.monster-card {
+background: var(–card);
+border-radius: 16px;
+padding: 20px 16px;
+text-align: center;
+border: 1px solid rgba(255,255,255,0.05);
+transition: all 0.25s;
+cursor: pointer;
+position: relative; overflow: hidden;
+}
+.monster-card:hover {
+border-color: var(–hot);
+transform: translateY(-6px) scale(1.02);
+box-shadow: 0 20px 40px rgba(255,45,85,0.15);
+}
+.monster-card::after {
+content: ‘’;
+position: absolute; inset: 0;
+background: radial-gradient(circle at 50% 0%, rgba(255,45,85,0.12), transparent 70%);
+opacity: 0;
+transition: opacity 0.3s;
+}
+.monster-card:hover::after { opacity: 1; }
+
+.monster-sprite {
+font-size: 52px;
+display: block;
+margin-bottom: 10px;
+animation: bobble 3s ease-in-out infinite;
+}
+@keyframes bobble {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-6px); }
+}
+.monster-card:nth-child(2) .monster-sprite { animation-delay: 0.4s; }
+.monster-card:nth-child(3) .monster-sprite { animation-delay: 0.8s; }
+.monster-card:nth-child(4) .monster-sprite { animation-delay: 1.2s; }
+.monster-card:nth-child(5) .monster-sprite { animation-delay: 1.6s; }
+.monster-card:nth-child(6) .monster-sprite { animation-delay: 2s; }
+
+.monster-name {
+font-family: ‘Russo One’, sans-serif;
+font-size: 12px;
+color: #fff;
+margin-bottom: 4px;
+}
+.monster-type {
+font-size: 10px;
+color: var(–dim);
+letter-spacing: 1px;
+}
+.rarity {
+display: inline-block;
+margin-top: 8px;
+padding: 2px 8px;
+border-radius: 4px;
+font-size: 9px;
+letter-spacing: 2px;
+font-weight: 700;
+}
+.rarity.common { background: rgba(150,150,150,0.2); color: #aaa; }
+.rarity.rare { background: rgba(30,144,255,0.2); color: #4da6ff; }
+.rarity.epic { background: rgba(155,48,255,0.2); color: #c66fff; }
+.rarity.legendary { background: rgba(255,215,0,0.2); color: var(–gold); }
+
+/* MAP */
+.map-visual {
+background: linear-gradient(135deg, #0a1628, #0d0d22);
+border-radius: 20px;
+padding: 32px;
+border: 1px solid rgba(0,255,204,0.1);
+position: relative;
+min-height: 260px;
+overflow: hidden;
+}
+.map-visual::before {
+content: ‘’;
+position: absolute; inset: 0;
+background-image: radial-gradient(circle, rgba(0,255,204,0.06) 1px, transparent 1px);
+background-size: 28px 28px;
+}
+.map-nodes {
+position: relative; z-index: 1;
+display: flex; align-items: center;
+flex-wrap: wrap; gap: 0;
+justify-content: space-around;
+padding: 20px 0;
+}
+.map-node {
+display: flex; flex-direction: column; align-items: center; gap: 8px;
+position: relative;
+}
+.node-circle {
+width: 60px; height: 60px; border-radius: 50%;
+display: flex; align-items: center; justify-content: center;
+font-size: 22px;
+position: relative;
+transition: all 0.3s;
+cursor: pointer;
+}
+.node-circle.active {
+background: rgba(0,255,204,0.15);
+border: 2px solid var(–neon);
+box-shadow: 0 0 20px rgba(0,255,204,0.3), 0 0 40px rgba(0,255,204,0.1);
+animation: pulse-node 2s ease-in-out infinite;
+}
+.node-circle.battle {
+background: rgba(255,45,85,0.15);
+border: 2px solid var(–hot);
+box-shadow: 0 0 20px rgba(255,45,85,0.3);
+}
+.node-circle.shop {
+background: rgba(255,215,0,0.15);
+border: 2px solid var(–gold);
+}
+.node-circle.boss {
+background: rgba(155,48,255,0.15);
+border: 2px solid var(–purple);
+box-shadow: 0 0 30px rgba(155,48,255,0.4);
+animation: pulse-boss 1.5s ease-in-out infinite;
+}
+@keyframes pulse-node {
+0%, 100% { box-shadow: 0 0 20px rgba(0,255,204,0.3); }
+50% { box-shadow: 0 0 35px rgba(0,255,204,0.6); }
+}
+@keyframes pulse-boss {
+0%, 100% { box-shadow: 0 0 30px rgba(155,48,255,0.4); }
+50% { box-shadow: 0 0 50px rgba(155,48,255,0.8); }
+}
+.node-label { font-size: 10px; color: var(–dim); letter-spacing: 1px; text-align: center; max-width: 70px; }
+.path-line {
+flex: 1; min-width: 40px; height: 2px;
+background: linear-gradient(90deg, rgba(0,255,204,0.2), rgba(0,255,204,0.1));
+position: relative; margin-bottom: 30px;
+}
+.path-line::after {
+content: ‘▶’;
+position: absolute; right: -6px; top: -7px;
+font-size: 10px; color: rgba(0,255,204,0.3);
+}
+
+/* MONETIZATION */
+.money-card { –card-accent: var(–gold); }
+.money-card .card-title { color: var(–gold); }
+.money-card .card-tag { background: rgba(255,215,0,0.1); color: var(–gold); }
+
+/* CATCH MECHANIC */
+.catch-steps {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+gap: 16px;
+}
+.catch-step {
+background: var(–card);
+border-radius: 16px;
+padding: 20px;
+border: 1px solid rgba(255,255,255,0.06);
+position: relative;
+}
+.step-num {
+position: absolute; top: 16px; right: 16px;
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 32px;
+color: rgba(255,255,255,0.05);
+}
+.catch-icon { font-size: 28px; margin-bottom: 10px; }
+.catch-title {
+font-family: ‘Russo One’, sans-serif;
+font-size: 13px;
+color: #fff;
+margin-bottom: 6px;
+}
+.catch-text { font-size: 11px; color: var(–dim); line-height: 1.7; }
+
+/* LOCA TABS */
+.loca-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.loca-tab {
+padding: 8px 20px; border-radius: 8px;
+border: 1px solid rgba(255,255,255,0.1);
+background: transparent; color: var(–dim);
+font-family: ‘Space Mono’, monospace; font-size: 12px;
+cursor: pointer; transition: all 0.2s;
+letter-spacing: 1px;
+}
+.loca-tab.active, .loca-tab:hover {
+background: rgba(0,255,204,0.1);
+border-color: var(–neon);
+color: var(–neon);
+}
+.loca-content {
+background: var(–card);
+border-radius: 16px;
+padding: 24px;
+border: 1px solid rgba(0,255,204,0.15);
+}
+.loca-name {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 28px; letter-spacing: 3px;
+margin-bottom: 6px;
+}
+.loca-desc { font-size: 12px; color: var(–dim); line-height: 1.8; margin-bottom: 16px; }
+.loca-stats { display: flex; gap: 24px; flex-wrap: wrap; }
+.loca-stat { }
+.loca-stat-label { font-size: 10px; color: var(–dim); letter-spacing: 2px; text-transform: uppercase; }
+.loca-stat-val {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 22px; color: var(–neon);
+letter-spacing: 2px;
+}
+
+/* TIMELINE */
+.timeline { position: relative; padding-left: 32px; }
+.timeline::before {
+content: ‘’;
+position: absolute; left: 8px; top: 0; bottom: 0;
+width: 2px;
+background: linear-gradient(180deg, var(–neon), var(–purple), var(–hot));
+opacity: 0.3;
+}
+.tl-item { position: relative; margin-bottom: 24px; }
+.tl-dot {
+position: absolute; left: -28px; top: 4px;
+width: 12px; height: 12px; border-radius: 50%;
+background: var(–neon);
+box-shadow: 0 0 8px var(–neon);
+}
+.tl-phase {
+font-size: 10px; color: var(–neon); letter-spacing: 3px;
+text-transform: uppercase; margin-bottom: 4px;
+}
+.tl-title {
+font-family: ‘Russo One’, sans-serif;
+font-size: 15px; color: #fff; margin-bottom: 6px;
+}
+.tl-text { font-size: 12px; color: var(–dim); line-height: 1.7; }
+
+/* FOOTER */
+footer {
+text-align: center;
+padding: 48px 20px;
+border-top: 1px solid rgba(255,255,255,0.05);
+margin-top: 60px;
+}
+footer p { font-size: 11px; color: var(–dim); letter-spacing: 3px; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(–bg); }
+::-webkit-scrollbar-thumb { background: rgba(0,255,204,0.3); border-radius: 3px; }
+
+/* DIVIDER */
+.divider {
+height: 1px;
+background: linear-gradient(90deg, transparent, rgba(0,255,204,0.15), transparent);
+margin: 40px 0;
+}
+
+/* highlight */
+.hl { color: var(–neon); }
+.hl-hot { color: var(–hot); }
+.hl-gold { color: var(–gold); }
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HERO -->
+
+  <div class="hero">
+    <div class="hero-eyebrow">Game Design Document v1.0</div>
+    <div class="hero-title">BRAINROT<br>WORLD</div>
+    <div class="hero-sub">Catch · Battle · Dominate</div>
+    <div class="hero-desc">
+      Геолокационная онлайн-игра с ловлей Italian Brainrot монстров, PvP-битвами на реальной карте и глубокой системой прогрессии.
+    </div>
+    <div class="badge-row">
+      <span class="badge">iOS / Android</span>
+      <span class="badge">Онлайн PvP</span>
+      <span class="badge">Геолокация</span>
+      <span class="badge">Catch & Battle</span>
+      <span class="badge">F2P + Premium</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CORE CONCEPT -->
+
+  <div class="section" id="s1">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-title">CORE CONCEPT</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="loop">
+      <div class="loop-steps">
+        <div class="loop-step">
+          <div class="loop-icon">🗺️</div>
+          <div class="loop-label">Ходишь по реальной карте</div>
+        </div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step">
+          <div class="loop-icon">👾</div>
+          <div class="loop-label">Встречаешь Brainrot монстра</div>
+        </div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step">
+          <div class="loop-icon">🎯</div>
+          <div class="loop-label">Мини-игра на поимку</div>
+        </div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step">
+          <div class="loop-icon">⚔️</div>
+          <div class="loop-label">PvP в точке встречи</div>
+        </div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step">
+          <div class="loop-icon">📈</div>
+          <div class="loop-label">Качаешь монстра, берёшь лут</div>
+        </div>
+        <div class="loop-arrow">→</div>
+        <div class="loop-step">
+          <div class="loop-icon">🏆</div>
+          <div class="loop-label">Захватываешь локации</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAP & NODES -->
+
+  <div class="section" id="s2">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-title">КАРТА И УЗЛЫ</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="map-visual">
+      <div class="map-nodes">
+        <div class="map-node">
+          <div class="node-circle active">🏠</div>
+          <div class="node-label">Точка спавна</div>
+        </div>
+        <div class="path-line"></div>
+        <div class="map-node">
+          <div class="node-circle battle">⚔️</div>
+          <div class="node-label">PvP Арена</div>
+        </div>
+        <div class="path-line"></div>
+        <div class="map-node">
+          <div class="node-circle active">👾</div>
+          <div class="node-label">Спавн монстров</div>
+        </div>
+        <div class="path-line"></div>
+        <div class="map-node">
+          <div class="node-circle shop">🛒</div>
+          <div class="node-label">Магазин</div>
+        </div>
+        <div class="path-line"></div>
+        <div class="map-node">
+          <div class="node-circle boss">💀</div>
+          <div class="node-label">Босс-локация</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px" class="card-grid cols-3">
+      <div class="card">
+        <div class="card-icon">📍</div>
+        <div class="card-title">Точки спавна</div>
+        <div class="card-text">Монстры появляются на реальных точках карты: парки, торговые центры, перекрёстки. Привязаны к типу местности — редкие в центре города, обычные везде.</div>
+        <span class="card-tag">DYNAMIC SPAWN</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚔️</div>
+        <div class="card-title">PvP Арены</div>
+        <div class="card-text">Два игрока оказываются в одной точке → автоматически предлагается дуэль. 3 монстра против 3. Победитель получает очки территории и лут проигравшего.</div>
+        <span class="card-tag">AUTO-TRIGGER</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏰</div>
+        <div class="card-title">Захват локаций</div>
+        <div class="card-text">Реальные POI-точки можно захватить командой. Захваченная точка даёт пассивный доход BrainCoins каждые 30 минут, пока её не отобьют.</div>
+        <span class="card-tag">TERRITORY CONTROL</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOCAS -->
+
+  <div class="section" id="s3">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-title">ЛОКАЦИИ (LOCA)</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="loca-tabs">
+      <button class="loca-tab active" onclick="showLoca(0)">ROMA SLUMS</button>
+      <button class="loca-tab" onclick="showLoca(1)">COLOSSEO</button>
+      <button class="loca-tab" onclick="showLoca(2)">SICILIAN VOID</button>
+      <button class="loca-tab" onclick="showLoca(3)">VENICE SWAMP</button>
+      <button class="loca-tab" onclick="showLoca(4)">NAPOLI CHAOS</button>
+    </div>
+    <div class="loca-content" id="locaBox">
+      <div class="loca-name" style="color: var(--neon)">🏚️ ROMA SLUMS</div>
+      <div class="loca-desc">Стартовая локация. Узкие улочки, граффити, монстры среднего уровня. Идеальна для обучения механикам. Здесь спавнится Tung Tung Sahur и его братья-пеньки.</div>
+      <div class="loca-stats">
+        <div class="loca-stat"><div class="loca-stat-label">Время</div><div class="loca-stat-val">3 МИН</div></div>
+        <div class="loca-stat"><div class="loca-stat-label">Монстры</div><div class="loca-stat-val">12+</div></div>
+        <div class="loca-stat"><div class="loca-stat-label">Уровень</div><div class="loca-stat-val">1–10</div></div>
+        <div class="loca-stat"><div class="loca-stat-label">Игроки</div><div class="loca-stat-val">∞</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MONSTERS -->
+
+  <div class="section" id="s4">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-title">ITALIAN BRAINROT — ROSTER</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="monster-grid">
+      <div class="monster-card">
+        <span class="monster-sprite">🪵</span>
+        <div class="monster-name">TUNG TUNG SAHUR</div>
+        <div class="monster-type">WOOD · IMPACT</div>
+        <span class="rarity rare">RARE</span>
+      </div>
+      <div class="monster-card">
+        <span class="monster-sprite">🐊</span>
+        <div class="monster-name">TRALALERO</div>
+        <div class="monster-type">WATER · SNEAK</div>
+        <span class="rarity common">COMMON</span>
+      </div>
+      <div class="monster-card">
+        <span class="monster-sprite">🍕</span>
+        <div class="monster-name">BOMBARDIRO</div>
+        <div class="monster-type">FIRE · BOOM</div>
+        <span class="rarity epic">EPIC</span>
+      </div>
+      <div class="monster-card">
+        <span class="monster-sprite">🦆</span>
+        <div class="monster-name">QUACCHINI</div>
+        <div class="monster-type">AIR · DODGE</div>
+        <span class="rarity common">COMMON</span>
+      </div>
+      <div class="monster-card">
+        <span class="monster-sprite">🦈</span>
+        <div class="monster-name">SBRINZ SHARK</div>
+        <div class="monster-type">DARK · BITE</div>
+        <span class="rarity legendary">LEGENDARY</span>
+      </div>
+      <div class="monster-card">
+        <span class="monster-sprite">🐱</span>
+        <div class="monster-name">GATTINO CHAOS</div>
+        <div class="monster-type">CHAOS · LUCK</div>
+        <span class="rarity epic">EPIC</span>
+      </div>
+      <div class="monster-card">
+        <span class="monster-sprite">🦩</span>
+        <div class="monster-name">FENICOTTERO</div>
+        <div class="monster-type">LIGHT · HEAL</div>
+        <span class="rarity rare">RARE</span>
+      </div>
+      <div class="monster-card">
+        <span class="monster-sprite">🐉</span>
+        <div class="monster-name">DRAGO ROMANO</div>
+        <div class="monster-type">FIRE · BOSS</div>
+        <span class="rarity legendary">LEGENDARY</span>
+      </div>
+    </div>
+    <div style="margin-top:16px; font-size:11px; color: var(--dim); text-align:center; letter-spacing:2px;">
+      → ВСЕГО 80+ МОНСТРОВ В РОСТЕРЕ · НОВЫЕ КАЖДЫЙ СЕЗОН ←
+    </div>
+  </div>
+
+  <!-- CATCH MECHANIC -->
+
+  <div class="section" id="s5">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="section-title">МЕХАНИКА ПОИМКИ</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="catch-steps">
+      <div class="catch-step">
+        <div class="step-num">1</div>
+        <div class="catch-icon">🎯</div>
+        <div class="catch-title">ENCOUNTER</div>
+        <div class="catch-text">Монстр появляется в AR-слое поверх камеры. Он двигается, уворачивается, издаёт звуки. У каждого монстра уникальная анимация спавна.</div>
+      </div>
+      <div class="catch-step">
+        <div class="step-num">2</div>
+        <div class="catch-icon">⚡</div>
+        <div class="catch-title">ОСЛАБЛЕНИЕ</div>
+        <div class="catch-text">Перед броском нужно ослабить монстра: свайп-атаки, тайминг-мини-игра, использование монстра из отряда. Чем слабее — тем выше шанс поимки.</div>
+      </div>
+      <div class="catch-step">
+        <div class="step-num">3</div>
+        <div class="catch-icon">🫙</div>
+        <div class="catch-title">БРОСОК КАПСУЛЫ</div>
+        <div class="catch-text">Свайп пальцем для броска Brainrot-капсулы. Кривая броска, сила, спин-бросок = бонус к поимке. Идеальное попадание даёт CRITICAL CATCH.</div>
+      </div>
+      <div class="catch-step">
+        <div class="step-num">4</div>
+        <div class="catch-icon">🔄</div>
+        <div class="catch-title">АНИМАЦИЯ</div>
+        <div class="catch-text">Монстр затягивается в капсулу с уникальной анимацией. 3 покачивания — пойман! Капсула может сломаться. Редкие монстры дают крутой эффект экрана.</div>
+      </div>
+      <div class="catch-step">
+        <div class="step-num">5</div>
+        <div class="catch-icon">✨</div>
+        <div class="catch-title">РЕЗУЛЬТАТ</div>
+        <div class="catch-text">Экран результата: редкость, характеристики, бонусы. Shiny-версия монстра (1/512 шанс) даёт особый эффект и повышенные статы.</div>
+      </div>
+      <div class="catch-step">
+        <div class="step-num">6</div>
+        <div class="catch-icon">📦</div>
+        <div class="catch-title">ЭВОЛЮЦИЯ</div>
+        <div class="catch-text">Поймай 3 одинаковых монстра → слияние в эволюцию. Эволюция меняет внешний вид, анимации и открывает новые способности для PvP.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PVP -->
+
+  <div class="section" id="s6">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="section-title">PvP СИСТЕМА</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="card-grid cols-2">
+      <div class="card" style="--card-accent: var(--hot)">
+        <div class="card-icon">⚔️</div>
+        <div class="card-title">Street Battle</div>
+        <div class="card-text">Дуэль 1v1 при сближении двух игроков. 3 монстра с каждой стороны. Пошаговые бои с выбором способностей. Таймер 90 секунд на ход. Проигравший роняет лут.</div>
+        <span class="card-tag" style="background:rgba(255,45,85,0.1); color:var(--hot)">1v1</span>
+      </div>
+      <div class="card" style="--card-accent: var(--purple)">
+        <div class="card-icon">🏆</div>
+        <div class="card-title">Guild War</div>
+        <div class="card-text">5v5 командные битвы за локации раз в неделю. Гильдия с наибольшим числом захваченных точек к концу недели получает сезонный приз.</div>
+        <span class="card-tag" style="background:rgba(155,48,255,0.1); color:var(--purple)">5v5</span>
+      </div>
+      <div class="card" style="--card-accent: var(--gold)">
+        <div class="card-icon">🌀</div>
+        <div class="card-title">Raid Boss</div>
+        <div class="card-text">Раз в 3 дня на карте появляется Рейд-Босс (огромный монстр). До 20 игроков могут объединиться для его победы. Лут делится по урону.</div>
+        <span class="card-tag" style="background:rgba(255,215,0,0.1); color:var(--gold)">20 PLAYERS</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎲</div>
+        <div class="card-title">Ranked Season</div>
+        <div class="card-text">Сезон длится 1 месяц. Рейтинг от Bronze до Brainrot King. Каждый тир даёт уникальные косметические награды — рамки, эффекты, exclusive монстров.</div>
+        <span class="card-tag">SEASONAL</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANIMATIONS -->
+
+  <div class="section" id="s7">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div class="section-title">АНИМАЦИИ И ВИЗУАЛ</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="card-grid cols-3">
+      <div class="card">
+        <div class="card-icon">🎬</div>
+        <div class="card-title">Спавн-анимации</div>
+        <div class="card-text">Каждый монстр имеет уникальную анимацию появления. Tung Tung Sahur — вырастает из земли как столб с сейсмическим эффектом.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">💥</div>
+        <div class="card-title">Атаки монстров</div>
+        <div class="card-text">3–5 уникальных атак с анимацией. Legendary монстры имеют «Ультимейт» с кат-сценой. Партиклы, шейк экрана, хроматическая аберрация.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌟</div>
+        <div class="card-title">Shiny-эффект</div>
+        <div class="card-text">Особый монстр при поимке: экран темнеет, золотые частицы, уникальный звук. Шанс 1/512. Трейлер в соц-сети автоматически.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🗺️</div>
+        <div class="card-title">Карта в реальном времени</div>
+        <div class="card-text">Монстры пульсируют на карте. Захваченные точки светятся цветом гильдии. Погода в игре = реальная погода (дождь = водные монстры).</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎭</div>
+        <div class="card-title">Эволюция</div>
+        <div class="card-text">Кат-сцена слияния с полноэкранным эффектом. Монстр разрушается и собирается заново. Длится 5 секунд — делится в соц-сети.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏟️</div>
+        <div class="card-title">Арены-биомы</div>
+        <div class="card-text">Визуал боевой арены зависит от реальной локации: парк = лесная арена, торговый центр = городская арена. 12 уникальных биомов.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MONETIZATION -->
+
+  <div class="section" id="s8">
+    <div class="section-header">
+      <div class="section-num">08</div>
+      <div class="section-title">МОНЕТИЗАЦИЯ</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="card-grid cols-2">
+      <div class="card money-card">
+        <div class="card-icon">🎫</div>
+        <div class="card-title">Battle Pass</div>
+        <div class="card-text">Сезонный пасс — 349₽/месяц. 50 уровней наград: монстры, капсулы, косметика, BrainCoins. Free-версия с меньшим числом наград. Основной доход.</div>
+        <span class="card-tag">ОСНОВНОЙ ДОХОД</span>
+      </div>
+      <div class="card money-card">
+        <div class="card-icon">💰</div>
+        <div class="card-title">BrainCoin Store</div>
+        <div class="card-text">Внутриигровая валюта. Покупка редких капсул, ускорение эволюции, слоты отряда, косметика для монстров, уникальные анимации атак. 299₽ — 1000 монет.</div>
+        <span class="card-tag">IAP</span>
+      </div>
+      <div class="card money-card">
+        <div class="card-icon">🗺️</div>
+        <div class="card-title">Sponsored Locations</div>
+        <div class="card-text">Кафе, магазины, заведения платят за то, чтобы стать точкой спавна редких монстров или ареной. Модель как у Pokémon GO Sponsored Stops.</div>
+        <span class="card-tag">B2B</span>
+      </div>
+      <div class="card money-card">
+        <div class="card-icon">👕</div>
+        <div class="card-title">Merch + Коллаборации</div>
+        <div class="card-text">Физические карточки монстров с QR-кодом — сканируй и получай монстра в игре. Коллаборации с брендами одежды, аниме-магазинами, стримерами.</div>
+        <span class="card-tag">ФИЗИЧЕСКИЙ MERCH</span>
+      </div>
+      <div class="card money-card">
+        <div class="card-icon">🔔</div>
+        <div class="card-title">Premium Subscription</div>
+        <div class="card-text">Brainrot+ — 199₽/мес: двойной опыт, радар монстров на 500м, 3 слота гарантии в капсулах, приоритет матчмейкинга, эксклюзивная рамка профиля.</div>
+        <span class="card-tag">ПОДПИСКА</span>
+      </div>
+      <div class="card money-card">
+        <div class="card-icon">🏆</div>
+        <div class="card-title">Tournament Entry</div>
+        <div class="card-text">Еженедельные турниры с реальным призовым фондом (донат пула). Вход 99₽, 70% пула — победителям, 30% — студии. Топ-стримеры как амбассадоры.</div>
+        <span class="card-tag">ESPORTS</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROADMAP -->
+
+  <div class="section" id="s9">
+    <div class="section-header">
+      <div class="section-num">09</div>
+      <div class="section-title">ROADMAP</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-phase">PHASE 1 · МЕСЯЦ 1–3</div>
+        <div class="tl-title">MVP Launch</div>
+        <div class="tl-text">20 монстров, 3 локации (Roma Slums, Colosseo, Sicilian Void), базовая механика поимки и PvP 1v1, система капсул, Battle Pass Season 1.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--purple); box-shadow:0 0 8px var(--purple)"></div>
+        <div class="tl-phase">PHASE 2 · МЕСЯЦ 4–6</div>
+        <div class="tl-title">Guild Wars Update</div>
+        <div class="tl-text">Гильдии, Guild War 5v5, Raid Bosses, 2 новые локации, система эволюции, AR-камера для поимки, Sponsored Locations B2B.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--gold); box-shadow:0 0 8px var(--gold)"></div>
+        <div class="tl-phase">PHASE 3 · МЕСЯЦ 7–12</div>
+        <div class="tl-title">Esports & Merch</div>
+        <div class="tl-text">Ranked Seasons, еженедельные турниры, физические карточки в продаже, коллаборации, 80+ монстров, 10+ локаций, глобальная карта событий.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--hot); box-shadow:0 0 8px var(--hot)"></div>
+        <div class="tl-phase">PHASE 4 · ГОД 2+</div>
+        <div class="tl-title">World Domination</div>
+        <div class="tl-text">Международный запуск, мировые события (сезонные), интеграция с реальными мероприятиями (концерты, фестивали как ивент-зоны), лицензирование IP.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <footer>
+    <p>BRAINROT WORLD · GAME DESIGN DOCUMENT V1.0 · 2025</p>
+    <p style="margin-top:8px">Made with 🧠 Italian Brainrot Energy</p>
+  </footer>
+
+</div>
+
+<script>
+// Intersection Observer for section reveal
+const sections = document.querySelectorAll('.section');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+sections.forEach(s => obs.observe(s));
+
+// Loca tabs
+const locas = [
+  {
+    icon: '🏚️', name: 'ROMA SLUMS', color: 'var(--neon)',
+    desc: 'Стартовая локация. Узкие улочки, граффити, монстры среднего уровня. Идеальна для обучения механикам. Здесь спавнится Tung Tung Sahur и его братья-пеньки.',
+    time: '3 МИН', monsters: '12+', lvl: '1–10', players: '∞'
+  },
+  {
+    icon: '🏟️', name: 'COLOSSEO', color: 'var(--hot)',
+    desc: 'Арена прошлого. Только PvP — монстров не ловишь, только сражаешься. 5 арен одновременно. Победитель поднимается в лидерборд Колизея. Шанс выпадения Legendary-монстра.',
+    time: '3 МИН', monsters: '0', lvl: '10–25', players: '10'
+  },
+  {
+    icon: '🌑', name: 'SICILIAN VOID', color: 'var(--purple)',
+    desc: 'Тёмная зона. Доступна только ночью (22:00–06:00). Монстры сильнее и редкие, шанс Shiny x3. Опасно: проиграв PvP здесь, теряешь одного монстра из команды на 24ч.',
+    time: '3 МИН', monsters: '8+', lvl: '15–30', players: '∞'
+  },
+  {
+    icon: '🌊', name: 'VENICE SWAMP', color: '#00aaff',
+    desc: 'Болотная Венеция. Только водные и тёмные монстры. Путь по карте разделён каналами — нужно искать мосты (реальные POI-точки). Уникальный монстр-эксклюзив — Gondoliero.',
+    time: '3 МИН', monsters: '15+', lvl: '5–20', players: '∞'
+  },
+  {
+    icon: '🍕', name: 'NAPOLI CHAOS', color: 'var(--gold)',
+    desc: 'Хаотичная зона. Монстры спавнятся хаотично и быстро исчезают. Специальная механика: тут можно торговать монстрами с другими игроками напрямую в реальном времени.',
+    time: '3 МИН', monsters: '20+', lvl: '1–40', players: '∞'
+  }
+];
+
+function showLoca(i) {
+  const l = locas[i];
+  document.getElementById('locaBox').innerHTML = `
+    <div class="loca-name" style="color:${l.color}">${l.icon} ${l.name}</div>
+    <div class="loca-desc">${l.desc}</div>
+    <div class="loca-stats">
+      <div class="loca-stat"><div class="loca-stat-label">Время</div><div class="loca-stat-val" style="color:${l.color}">${l.time}</div></div>
+      <div class="loca-stat"><div class="loca-stat-label">Монстры</div><div class="loca-stat-val" style="color:${l.color}">${l.monsters}</div></div>
+      <div class="loca-stat"><div class="loca-stat-label">Уровень</div><div class="loca-stat-val" style="color:${l.color}">${l.lvl}</div></div>
+      <div class="loca-stat"><div class="loca-stat-label">Игроки</div><div class="loca-stat-val" style="color:${l.color}">${l.players}</div></div>
+    </div>
+  `;
+  document.querySelectorAll('.loca-tab').forEach((t, j) => {
+    t.classList.toggle('active', i === j);
+  });
+}
+</script>
+
+</body>
+</html>
