@@ -25,10 +25,5 @@ vless://d13b3640-2d9a-4dd8-9bd5-254541817803@158.160.207.212:8443?encryption=non
 vless://8d871cc5-e1ff-4adb-b68a-6b876124c7d3@157.22.241.115:8443?encryption=none&security=reality&sni=swdist.apple.com&fp=chrome&pbk=SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc&sid=6ba85179e30d4fc2&type=tcp&flow=xtls-rprx-vision#🇷🇺 (RU) YT Без рекламы Alexper_VPN⚡️
 vless://8d871cc5-e1ff-4adb-b68a-6b876124c7d3@80.66.81.22:443?encryption=none&security=reality&sni=ru-comet3.astrapeek.ru&fp=chrome&pbk=o3xy605wQgOgwPdA1tZAKYdbwK5_z-X2qxnV9rIzdy4&type=tcp&flow=xtls-rprx-vision#🇺🇸 (US) YT Без рекламы Alexper_VPN⚡️
 vless://8d871cc5-e1ff-4adb-b68a-6b876124c7d3@80.66.89.182:8443?encryption=none&security=reality&sni=ru.asni2.astrapeek.ru&fp=chrome&pbk=o3xy605wQgOgwPdA1tZAKYdbwK5_z-X2qxnV9rIzdy4&type=tcp&flow=xtls-rprx-vision#🇫🇷 (FR) Alexper_VPN⚡️
-vless://8d871cc5-e1ff-4adb-b68a-6b876124c7d3@95.163.208.231:444?encryption=none&security=reality&sni=sun6-22.userapi.com&fp=chrome&pbk=bolMb-yrl2OaNaPPEclcPipNvvHeIhJvNbzCKd9rUhI&sid=f7cb8e88a25caa02&type=tcp&flow=xts-rprx-vision#RU LTE ОБХОД #1
-vless://8d871cc5-e1ff-4adb-b68a-6b876124c7d3@95.163.208.231:7443?encryption=none&security=reality&sni=eh.vk.com&fp=chrome&pbk=bolMb-yrl2OaNaPPEclcPipNvvHeIhJvNbzCKd9rUhI&sid=f7cb8e88a25caa02&type=tcp&flow=xts-rprx-vision#RU LTE ОБХОД #2
-vless://8d871cc5-e1ff-4adb-b68a-6b876124c7d3@158.160.88.72:2083?encryption=none&security=reality&sni=ok.ru&fp=chrome&pbk=W1yk4lYr1I5GJMfxBr5II8THrvu5sCKfojZj3slk9jE&sid=e0057aa62f9dcf4c&type=xhttp&flow=#EE LTE ОБХОД #1
-vless://8d871cc5-e1ff-4adb-b68a-6b876124c7d3@158.160.88.72:443?encryption=none&security=reality&sni=vkvideo.ru&fp=chrome&pbk=KTAjOrl28A-xR7Y8-R35CzWuypzRgATNbBUQLBT7IDI&sid=2396ea34eed6148c&type=xhttp&flow=#EE LTE ОБХОД #2
-vless://8d871cc5-e1ff-4adb-b68a-6b876124c7d3@80.66.81.11:8443?encryption=none&security=reality&sni=ru1-spofy.astrapeek.ru&fp=chrome&pbk=o3xy605wQgOgwPdA1tZAKYdbwK5_z-X2qxnV9rIzdy4&sid=53c7c29f0879583b&type=tcp&flow=xts-rprx-vision#EE
-vless://8d871cc5-e1ff-4adb-b68a-6b876124c7d3@193.163.203.146:443?encryption=none&security=reality&sni=play-1vknether.astrapeek.ru&fp=chrome&pbk=hmfKint1Wg3xowdecVznhiuxyAaNHGG3FH1FHAJzhU8&sid=dd9537363ac8bf41&type=xhttp&flow=#NL
+
 
