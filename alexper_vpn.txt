@@ -2,4 +2,6 @@ vless://329cf82d-9d44-4acc-bc2f-281f2a528091@se.snowfall.top:1443?flow=xtls-rprx
 hy2://tg_2048730963_971e4d6f:5c152c5cd6cca92f5f94335c@46.21.81.100:443?sni=46.21.81.100&insecure=1#🇸🇪 Швеция VIP TLS Alexper_VPN
 hy2://tg_2048730963_971e4d6f:5c152c5cd6cca92f5f94335c@147.45.69.138:443?sni=147.45.69.138&insecure=1#🇫🇷 Франция #654B4 TLS Alexper_VPN
 hy2://tg_2048730963_971e4d6f:5c152c5cd6cca92f5f94335c@147.45.69.138:443?sni=147.45.69.138&insecure=1#🇫🇷 Франция #654B4 Hopping Alexper_VPN
+hysteria2://tg_2048730963_971e4d6f:5c152c5cd6cca92f5f94335c@45.137.69.43:443?sni=45.137.69.43&insecure=1#Alexper_VPN 🇫🇮 Финляндия Hopping
+hysteria2://tg_2048730963_971e4d6f:5c152c5cd6cca92f5f94335c@45.137.69.43:443?sni=45.137.69.43&insecure=1#Alexper_VPN 🇫🇮 Финляндия TLS
 
