@@ -6,10 +6,10 @@ hysteria2://tg_2048730963_971e4d6f:5c152c5cd6cca92f5f94335c@45.137.69.43:443?sni
 hysteria2://tg_2048730963_971e4d6f:5c152c5cd6cca92f5f94335c@45.137.69.43:443?sni=45.137.69.43&insecure=1#Alexper_VPN 🇫🇮 Финляндия TLS
 hysteria2://tg_2048730963_971e4d6f:5c152c5cd6cca92f5f94335c@45.141.119.94:443?sni=45.141.119.94&insecure=1#Alexper_VPN 🇨🇭 Швейцария TLS
 hysteria2://tg_2048730963_971e4d6f:5c152c5cd6cca92f5f94335c@104.238.29.48:443?sni=104.238.29.48&insecure=1#Alexper_VPN 🇫🇮 Финляндия #54F7 TLS
-hysteria2://tg_2048730963_971e4d6f%3A5c152c5cd6cca92f5f94335c@45.141.119.94:443/?insecure=1&alpn=h3#🇨🇭%20Швейцария%20TLS
-hysteria2://tg_2048730963_971e4d6f%3A5c152c5cd6cca92f5f94335c@104.238.29.48:443/?insecure=1&alpn=h3#🇫🇮%20Финляндия%20Hopping
-hysteria2://tg_2048730963_971e4d6f%3A5c152c5cd6cca92f5f94335c@45.137.201.66:443/?insecure=1&alpn=h3#🇧🇬%20Болгария%20TLS
-hysteria2://tg_2048730963_971e4d6f%3A5c152c5cd6cca92f5f94335c@45.137.69.19:443/?insecure=1&alpn=h3#🇫🇮%20Финляндия%20VIP%20#2
+hysteria2://tg_2048730963_971e4d6f%3A5c152c5cd6cca92f5f94335c@45.141.119.94:443/?insecure=1&alpn=h3#🇨🇭%20Швейцария%20TLS Alexper_VPN
+hysteria2://tg_2048730963_971e4d6f%3A5c152c5cd6cca92f5f94335c@104.238.29.48:443/?insecure=1&alpn=h3#🇫🇮%20Финляндия%20Hopping Alexper_VPN
+hysteria2://tg_2048730963_971e4d6f%3A5c152c5cd6cca92f5f94335c@45.137.201.66:443/?insecure=1&alpn=h3#🇧🇬%20Болгария%20TLS Alexper_VPN
+hysteria2://tg_2048730963_971e4d6f%3A5c152c5cd6cca92f5f94335c@45.137.69.19:443/?insecure=1&alpn=h3#🇫🇮%20Финляндия%20VIP%20#2 Alexper_VPN
 hysteria2://tg_2048730963_971e4d6f:5c152c5cd6cca92f5f94335c@212.113.119.184:443?insecure=1&alpn=h3#🇦🇹%20Австрия%20TLS Alexper_VPN
 hysteria2://tg_2048730963_971e4d6f:5c152c5cd6cca92f5f94335c@212.113.119.184:443?insecure=1&alpn=h3#🇦🇹%20Австрия%20Hopping Alexper_VPN
 hysteria2://tg_2048730963_971e4d6f:5c152c5cd6cca92f5f94335c@46.21.81.100:443?insecure=1&alpn=h3#🇸🇪%20Швеция%20VIP%20Hopping Alexper_VPN
