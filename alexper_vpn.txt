@@ -1,2 +1,4 @@
 vless://329cf82d-9d44-4acc-bc2f-281f2a528091@se.snowfall.top:1443?flow=xtls-rprx-vision&type=tcp&headerType=none&security=reality&fp=chrome&sni=se.snowfall.top&pbk=wHhzA580eLv3fxvwVe1IPBgel9vFUWR_xLjAvTXNRio&sid=0441f3e34348cb45&spx=/#%F0%9F%87%B8%F0%9F%87%AASweden,%20Dalarna%20%7C%20Alexper%20VPN%20%E2%9A%A1
-hy2://tg_2048730963_971e4d6f:5c152c5cd6cca92f5f94335c@46.21.81.100:443?sni=46.21.81.100&insecure=1#🇸🇪 Швеция VIP TLS
+hy2://tg_2048730963_971e4d6f:5c152c5cd6cca92f5f94335c@46.21.81.100:443?sni=46.21.81.100&insecure=1#🇸🇪 Швеция VIP TLS Alexper_VPN
+hy2://tg_2048730963_971e4d6f:5c152c5cd6cca92f5f94335c@147.45.69.138:443?sni=147.45.69.138&insecure=1#🇫🇷 Франция #654B4 TLS Alexper_VPN
+hy2://tg_2048730963_971e4d6f:5c152c5cd6cca92f5f94335c@147.45.69.138:443?sni=147.45.69.138&insecure=1#🇫🇷 Франция #654B4 Hopping Alexper_VPN
